@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>窄门·三才九教 | 五才自测</title>
+<style>
+  :root {
+    --primary: #8b1a1a;
+    --primary-light: #a52a2a;
+    --gold: #c9a961;
+    --gold-light: #e0c88a;
+    --bg: #faf7f2;
+    --text: #2c2c2c;
+    --text-light: #777;
+    --border: #e8e0d0;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(139, 26, 26, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(180deg, #faf7f2 0%, #f0e8dc 100%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 80px;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* 头部 */
+  .header { text-align: center; margin-bottom: 28px; }
+  .header .brand {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .header h1 {
+    font-size: 26px;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .header .sub {
+    font-size: 13px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+  }
+  .header .divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 16px auto 0;
+  }
+
+  /* 进度条 */
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(250, 247, 242, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 12px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: #ede5d8;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), var(--primary));
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  /* 题目卡片 */
+  .question {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(232, 224, 208, 0.6);
+    transition: border-color 0.2s;
+  }
+  .question.answered { border-color: rgba(201, 169, 97, 0.5); }
+  .q-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .q-title .num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    margin-right: 8px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: #fdfcf9;
+    font-size: 14px;
+    color: #444;
+  }
+  .option:hover { border-color: var(--gold-light); background: #fffdf8; }
+  .option.selected {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, #fdf6f0, #faf0e8);
+    color: var(--primary);
+    font-weight: 500;
+  }
+  .option .key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 10px;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    color: #999;
+    background: #fff;
+  }
+  .option.selected .key {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .option .txt { flex: 1; padding-top: 1px; }
+
+  /* 提交按钮 */
+  .submit-wrap { margin-top: 28px; text-align: center; }
+  .btn {
+    display: inline-block;
+    padding: 14px 48px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(139, 26, 26, 0.28);
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(139, 26, 26, 0.36);
+  }
+  .btn-primary:disabled {
+    background: #d8d0c4;
+    cursor: not-allowed;
+    box-shadow: none;
+    color: #fff;
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    padding: 12px 40px;
+    font-size: 15px;
+  }
+  .btn-outline:hover { background: var(--primary); color: #fff; }
+  .hint {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 12px;
+  }
+
+  /* 结果页 */
+  #result { display: none; animation: fadeIn 0.5s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  .result-title {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .result-h1 {
+    text-align: center;
+    font-size: 22px;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+  }
+
+  .main-card {
+    background: linear-gradient(135deg, #8b1a1a 0%, #a52a2a 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 26px 22px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(139, 26, 26, 0.28);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .main-card::before {
+    content: "";
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .main-card .badge {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 3px 14px;
+    border: 1px solid rgba(224, 200, 138, 0.7);
+    color: var(--gold-light);
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  .main-card h2 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 4px;
+  }
+  .main-card .core {
+    font-size: 14px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+  }
+  .main-card .desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.82);
+    margin-top: 14px;
+    line-height: 1.8;
+    text-align: left;
+    padding: 14px;
+    background: rgba(0,0,0,0.12);
+    border-radius: 10px;
+  }
+
+  .info-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 20px 18px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(232, 224, 208, 0.6);
+  }
+  .info-card h3 {
+    font-size: 14px;
+    color: var(--primary);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+  .info-row {
+    display: flex;
+    padding: 9px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed #f0ebe0;
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-row .label {
+    color: var(--text-light);
+    width: 90px;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+  .info-row .value { color: var(--text); flex: 1; font-weight: 500; }
+  .info-row .value.highlight { color: var(--primary); }
+
+  /* 得分条 */
+  .score-item { margin-bottom: 14px; }
+  .score-item:last-child { margin-bottom: 0; }
+  .score-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+  .score-head .name { font-weight: 500; }
+  .score-head .val { color: var(--text-light); font-size: 12px; }
+  .score-bar-bg {
+    height: 9px;
+    background: #f0ebe0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    width: 0;
+    transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .score-item.is-main .score-head .name { color: var(--primary); font-weight: 700; }
+
+  /* 总结文案 */
+  .summary-box {
+    background: linear-gradient(135deg, #fdf9f2, #f7f0e4);
+    border: 1px dashed var(--gold-light);
+    border-radius: 14px;
+    padding: 18px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  .summary-box .title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .actions { text-align: center; padding-top: 8px; }
+  .footer {
+    text-align: center;
+    font-size: 12px;
+    color: #bbb;
+    margin-top: 40px;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="brand">窄 门 学 习 会</div>
+    <h1>三才九教 · 五才自测</h1>
+    <div class="sub">找到你的灵魂本底 · 成就事业破局</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- 测验区 -->
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span>完成进度</span>
+        <span id="progressText">0 / 10</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div id="questions"></div>
+    <div class="submit-wrap">
+      <button class="btn btn-primary" id="submitBtn" disabled onclick="submitQuiz()">查看我的五才结果</button>
+      <div class="hint" id="hintText">请完成全部 10 题后提交</div>
+    </div>
+  </div>
+
+  <!-- 结果区 -->
+  <div id="result"></div>
+
+  <div class="footer">© 窄门学习会 · 三才九教</div>
+</div>
+
+<script>
+/* ============ 题目数据 ============ */
+const questions = [
+  { q: "遇到新机会时，你第一反应是：", opts: {
+    A: "谁能为我所用？",
+    B: "干！先拿下再说。",
+    C: "先看看大家怎么看，别得罪人。",
+    D: "先分析风险、逻辑和趋势。",
+    E: "先想流程、资源和后续怎么稳住。"
+  }},
+  { q: "别人夸你，你最受用哪一句？", opts: {
+    A: "你真有格局，能成大事。",
+    B: "你真有魄力，敢打敢拼。",
+    C: "你人真好，大家都服你。",
+    D: "你真聪明，看问题真透。",
+    E: "你真靠谱，交给你放心。"
+  }},
+  { q: "团队出问题，你最容易扮演：", opts: {
+    A: "定方向、分利益、换人。",
+    B: "冲上去救火、拿结果。",
+    C: "安抚情绪、协调关系。",
+    D: "找根因、出方案。",
+    E: "建制度、控风险、保稳定。"
+  }},
+  { q: "你最怕别人说你：", opts: {
+    A: "控制欲太强。",
+    B: "爱面子、爱抢功。",
+    C: "想太多、太敏感。",
+    D: "太精明、爱算计。",
+    E: "太保守、太谨慎。"
+  }},
+  { q: "你谈恋爱最像：", opts: {
+    A: "势恋：看是否势均力敌、能否互相成就。",
+    B: "匪恋：喜欢就追，直接霸道。",
+    C: "浪恋：浪漫暧昧，享受过程。",
+    D: "暗恋：默默关注，很难开口。",
+    E: "伴恋：稳定陪伴，务实长久。"
+  }},
+  { q: "你的脸型 / 气场更像：", opts: {
+    A: "方正脸，不怒自威。",
+    B: "方脸，表情奔放，眼神有挑战感。",
+    C: "圆脸，和气，爱笑。",
+    D: "长脸 / 三角脸，冷静，眼神偏防御。",
+    E: "圆润温和，像秘书长。"
+  }},
+  { q: "走路 / 坐姿更像：", opts: {
+    A: "龙行虎步，背挺直，有压制力。",
+    B: "大步流星，手放腿上。",
+    C: "微笑，手爱托下巴。",
+    D: "双手交叉或相握，保持距离。",
+    E: "上身微前倾，双手自然交握，善于倾听。"
+  }},
+  { q: "你最容易被困在：", opts: {
+    A: "权：不敢放权，孤独多疑。",
+    B: "色：面子、荣誉、存在感。",
+    C: "情：猜忌、内耗、摇摆。",
+    D: "钱：比较、嫉妒、焦虑。",
+    E: "责：完美主义、过度谨慎。"
+  }},
+  { q: "你最适合的团队位置：", opts: {
+    A: "定方向、分利益、聚人心。",
+    B: "打市场、开新局、拿结果。",
+    C: "搞关系、做执行、稳团队。",
+    D: "出策略、做产品、谋未来。",
+    E: "理内政、控资源、保稳定。"
+  }},
+  { q: "你最想修炼成：", opts: {
+    A: "从掌控到赋能。",
+    B: "从抢功到分功。",
+    C: "从猜疑到信任。",
+    D: "从嫉妒到欣赏。",
+    E: "从守成到平衡。"
+  }}
+];
+
+/* ============ 五才解读数据 ============ */
+const types = {
+  A: {
+    name: "帝王才", core: "驭人者", key: "驭人",
+    talent: "格局、分利、聚人", root: "掌控欲", trapped: "权",
+    practice: "从掌控到赋能", examples: "刘邦、朱元璋",
+    talk: "给结果、给忠诚、给格局",
+    color: "#8b1a1a",
+    desc: "你是团队的灵魂与绝对核心，天生具备「将将」的领导力。你不必自己最能打，但能识别人才、驾驭人才、整合人才，让各路顶尖高手甘愿追随。"
+  },
+  B: {
+    name: "帅才", core: "开创者", key: "开创",
+    talent: "行动、开拓、拿结果", root: "虚荣心", trapped: "色",
+    practice: "从抢功到分功", examples: "项羽、成吉思汗",
+    talk: "给舞台、给目标、给荣誉",
+    color: "#c0392b",
+    desc: "你是天生的领袖与开创者，行动力、开拓力、猎取力极强，负责打江山、开新局。说干就干，先拿下再说。"
+  },
+  C: {
+    name: "将才", core: "连接者", key: "连接",
+    talent: "关系、执行、稳团队", root: "多疑心", trapped: "情",
+    practice: "从猜疑到信任", examples: "刘备、孔子",
+    talk: "给关系、给安全感、给参与感",
+    color: "#c9a961",
+    desc: "你是人际高手与优秀执行者，感应力、和谐力、服务力出色，负责搞关系、聚人心、冲锋陷阵。你往哪儿一站，团队就稳。"
+  },
+  D: {
+    name: "慧才", core: "谋划者", key: "谋划",
+    talent: "思考、策略、预见", root: "嫉妒心", trapped: "钱",
+    practice: "从嫉妒到欣赏", examples: "诸葛亮、张良",
+    talk: "给空间、给数据、给认可",
+    color: "#2c7873",
+    desc: "你是战略家与军师，智慧力、思考力、预见力超群，负责出谋划策、做产品、谋未来。你冷静、缜密、看得远。"
+  },
+  E: {
+    name: "相才", core: "平衡者", key: "平衡",
+    talent: "统筹、内政、资源", root: "秩序感", trapped: "责",
+    practice: "从守成到平衡", examples: "萧何、管仲",
+    talk: "给规则、给尊重、给稳定",
+    color: "#4a5568",
+    desc: "你是团队的定海神针与平衡者，负责守后方、理内政、调配资源，把混乱变有序，让前方将士无后顾之忧。"
+  }
+};
+
+/* ============ 状态 ============ */
+let answers = new Array(10).fill(null);
+
+/* ============ 渲染题目 ============ */
+function renderQuestions() {
+  const box = document.getElementById("questions");
+  box.innerHTML = questions.map((item, i) => `
+    <div class="question" id="q-${i}">
+      <div class="q-title"><span class="num">${i + 1}</span>${item.q}</div>
+      <div class="options">
+        ${Object.keys(item.opts).map(k => `
+          <div class="option" data-q="${i}" data-k="${k}" onclick="selectOption(${i}, '${k}')">
+            <span class="key">${k}</span>
+            <span class="txt">${item.opts[k]}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+/* ============ 选择选项 ============ */
+function selectOption(qIdx, key) {
+  answers[qIdx] = key;
+  const qEl = document.getElementById("q-" + qIdx);
+  qEl.querySelectorAll(".option").forEach(o => {
+    o.classList.toggle("selected", o.dataset.k === key);
+  });
+  qEl.classList.add("answered");
+  updateProgress();
+}
+
+/* ============ 更新进度 ============ */
+function updateProgress() {
+  const done = answers.filter(a => a !== null).length;
+  const pct = (done / 10) * 100;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressText").textContent = done + " / 10";
+  const btn = document.getElementById("submitBtn");
+  const hint = document.getElementById("hintText");
+  if (done === 10) {
+    btn.disabled = false;
+    hint.textContent = "已完成全部题目，点击查看结果";
+  } else {
+    btn.disabled = true;
+    hint.textContent = `还剩 ${10 - done} 题未完成`;
+  }
+}
+
+/* ============ 提交测验 ============ */
+function submitQuiz() {
+  const scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+  answers.forEach(a => { if (a) scores[a]++; });
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const maxScore = sorted[0][1];
+  const mainKeys = sorted.filter(([, v]) => v === maxScore).map(([k]) => k);
+  const mainKey = mainKeys[0];
+  const rest = sorted.filter(([k]) => !mainKeys.includes(k));
+  const subKey = rest.length ? rest[0][0] : null;
+  const hasTie = mainKeys.length > 1;
+
+  renderResult(scores, mainKey, subKey, hasTie, mainKeys);
+  document.getElementById("quiz").style.display = "none";
+  const r = document.getElementById("result");
+  r.style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ============ 渲染结果 ============ */
+function renderResult(scores, mainKey, subKey, hasTie, mainKeys) {
+  const main = types[mainKey];
+  const sub = subKey ? types[subKey] : null;
+  const maxScore = Math.max(...Object.values(scores));
+
+  const scoreHtml = Object.keys(types).map(k => {
+    const t = types[k];
+    const v = scores[k];
+    const pct = (v / 10) * 100;
+    const isMain = k === mainKey;
+    return `
+      <div class="score-item ${isMain ? 'is-main' : ''}">
+        <div class="score-head">
+          <span class="name">${t.name} <span style="color:#bbb;font-weight:400;font-size:12px;">${t.core}</span></span>
+          <span class="val">${v} / 10</span>
+        </div>
+        <div class="score-bar-bg">
+          <div class="score-bar-fill" style="background:${t.color};" data-width="${pct}"></div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const summaryText = `我的主才是「${main.name}」，副才是「${sub ? sub.name : "无明显副才"}」。我的灵魂本底是${main.root}，被困于「${main.trapped}」，修炼方向是：${main.practice}。`;
+
+  const tieNote = hasTie
+    ? `<div style="font-size:13px;color:#c9a961;margin-top:10px;padding:10px;background:#fdf9f2;border-radius:8px;">提示：你是复合型人才，${mainKeys.map(k => types[k].name).join("、")}并列为主才。</div>`
+    : "";
+
+  const html = `
+    <div class="result-title">你 的 测 评 结 果</div>
+    <div class="result-h1">三才九教 · 五才定位</div>
+
+    <div class="main-card">
+      <div class="badge">主 才</div>
+      <h2>${main.name}</h2>
+      <div class="core">${main.core}</div>
+      <div class="desc">${main.desc}</div>
+    </div>
+
+    <div class="info-card">
+      <h3>主才详细解读</h3>
+      <div class="info-row"><span class="label">核心</span><span class="value highlight">${main.key}</span></div>
+      <div class="info-row"><span class="label">天赋</span><span class="value">${main.talent}</span></div>
+      <div class="info-row"><span class="label">灵魂本底</span><span class="value highlight">${main.root}</span></div>
+      <div class="info-row"><span class="label">被困于</span><span class="value">${main.trapped}</span></div>
+      <div class="info-row"><span class="label">修炼方向</span><span class="value highlight">${main.practice}</span></div>
+      <div class="info-row"><span class="label">代表人物</span><span class="value">${main.examples}</span></div>
+      <div class="info-row"><span class="label">沟通话术</span><span class="value">${main.talk}</span></div>
+    </div>
+
+    ${sub ? `
+    <div class="info-card">
+      <h3>副才参考</h3>
+      <div class="info-row"><span class="label">副才</span><span class="value highlight">${sub.name}（${sub.core}）</span></div>
+      <div class="info-row"><span class="label">天赋</span><span class="value">${sub.talent}</span></div>
+      <div class="info-row"><span class="label">修炼方向</span><span class="value">${sub.practice}</span></div>
+      <div class="info-row"><span class="label">代表人物</span><span class="value">${sub.examples}</span></div>
+    </div>` : ""}
+
+    <div class="info-card">
+      <h3>五才得分分布</h3>
+      ${scoreHtml}
+      ${tieNote}
+    </div>
+
+    <div class="summary-box">
+      <div class="title">我 的 五 才 定 位</div>
+      ${summaryText}
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-outline" onclick="restart()">重新测试</button>
+    </div>
+  `;
+
+  const r = document.getElementById("result");
+  r.innerHTML = html;
+
+  // 动画：条形图
+  setTimeout(() => {
+    r.querySelectorAll(".score-bar-fill").forEach(el => {
+      el.style.width = el.dataset.width + "%";
+    });
+  }, 100);
+}
+
+/* ============ 重新开始 ============ */
+function restart() {
+  answers = new Array(10).fill(null);
+  document.getElementById("result").style.display = "none";
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("quiz").style.display = "block";
+  document.querySelectorAll(".option").forEach(o => o.classList.remove("selected"));
+  document.querySelectorAll(".question").forEach(q => q.classList.remove("answered"));
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ============ 初始化 ============ */
+renderQuestions();
+updateProgress();
+</script>
+</body>
+</html>
